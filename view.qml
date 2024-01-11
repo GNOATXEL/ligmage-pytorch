@@ -1,21 +1,18 @@
 import QtCore
-import QtQuick
-import QtQuick.Controls
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import Qt.labs.platform
-// import QtQuick.Controls.Material
 
 Window {
     width: 720
     height: 480
     visible: true
     title: "Ligmage"
-    // Material.theme: Material.Light
 
     FolderDialog {
         id: folderDialog
-//        selectFolder: true
         title: qsTr("Dossier d'images")
         currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
         onAccepted: {
@@ -24,13 +21,20 @@ Window {
         }
     }
 
+    function copyImageToClipboard(image) {
+        if (image.status === Image.Ready) {
+            /*const clipboard = Qt.clipboard;
+            clipboard.image = image.source;*/
+
+            backend.copy_image(image.source.toString());
+        }
+    }
+
     RowLayout {
         anchors.fill: parent
 
         ColumnLayout {
-            // id: mainGrid
-            // columns: 3
-            Layout.margins: 50
+            Layout.margins: 10
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
             
@@ -51,9 +55,8 @@ Window {
                     elide: Text.ElideRight*/
                     text: "Dossier"
                 }
-
             }
-            // --
+
             RowLayout {
                 TextInput {
                     id: searchInput
@@ -66,17 +69,14 @@ Window {
                     text: qsTr("Chercher")
                     onClicked: backend.run_ligmage(searchInput.text)
                 }
-
             }
-
-            // --
 
             Text {
                 id: progressText
                 text: "Statut : 0/0"
                 font.pointSize: 12
                 color: "green"
-                
+
                 Component.onCompleted: {
                     ligmage.progress_changed.connect(updateProgressText)
                 }
@@ -85,8 +85,6 @@ Window {
                     progressText.text = "Statut : " + ligmage.progress.join("/")
                 }
             }
-
-            // --
 
             Text {
                 id: matchingImagesText
@@ -103,40 +101,103 @@ Window {
                     img1.source = folderDialog.folder + "/" + ligmage.images[0];
                     img2.source = folderDialog.folder + "/" + ligmage.images[1];
                     img3.source = folderDialog.folder + "/" + ligmage.images[2];
+
+                    img1Text.text = ligmage.images[0];
+                    img2Text.text = ligmage.images[1];
+                    img3Text.text = ligmage.images[2];
                 }
             }
 
-            Row {
+            RowLayout {
                 spacing: 10
 
-                Image {
-                    id: img1
-                    width: 200
-                    height: 200
-                    sourceSize.width: parent.width // Maintain aspect ratio
-                    anchors.verticalCenter: parent.verticalCenter
-                    asynchronous: true
+                ColumnLayout {
+                    Image {
+                        id: img1
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        sourceSize.height: parent.height // Maintain aspect ratio
+                        asynchronous: true
+                        Layout.preferredHeight: parent.height / 3 // Set a preferred height
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    RowLayout {
+                        Text {
+                            id: img1Text
+                            text: ""
+                        }
+
+                        Button {
+                            text: "Copier"
+                            onClicked: copyImageToClipboard(img1)
+
+                            contentItem: Image {
+                                source: Standard.icon(Standard.CopyIcon)
+                            }
+                        }
+
+                    }
                 }
 
-                Image {
-                    id: img2
-                    width: 200
-                    height: 200
-                    sourceSize.width: parent.width // Maintain aspect ratio
-                    anchors.verticalCenter: parent.verticalCenter
-                    asynchronous: true
+                ColumnLayout {
+                    Image {
+                        id: img2
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        sourceSize.height: parent.height // Maintain aspect ratio
+                        asynchronous: true
+                        Layout.preferredHeight: parent.height / 3 // Set a preferred height
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    RowLayout {
+                        Text {
+                            id: img2Text
+                            text: ""
+                        }
+
+                        Button {
+                            text: "Copier"
+                            onClicked: copyImageToClipboard(img2)
+
+                            contentItem: Image {
+                                source: Standard.icon(Standard.CopyIcon)
+                            }
+                        }
+
+                    }
                 }
 
-                Image {
-                    id: img3
-                    width: 200
-                    height: 200
-                    sourceSize.width: parent.width // Maintain aspect ratio
-                    anchors.verticalCenter: parent.verticalCenter
-                    asynchronous: true
+                ColumnLayout {
+                    Image {
+                        id: img3
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        sourceSize.height: parent.height // Maintain aspect ratio
+                        asynchronous: true
+                        Layout.preferredHeight: parent.height / 3 // Set a preferred height
+                        fillMode: Image.PreserveAspectFit
+                    }
+
+                    RowLayout {
+                        Text {
+                            id: img3Text
+                            text: ""
+                        }
+
+                        Button {
+                            text: "Copier"
+                            onClicked: copyImageToClipboard(img3)
+
+                            contentItem: Image {
+                                source: Standard.icon(Standard.CopyIcon)
+                            }
+                        }
+
+                    }
                 }
             }
-            
         }
     }
 }

@@ -19,6 +19,7 @@ class Ligmage(QObject):
 
         self._progress = [0, 0]
         self._images = ["", "", ""]
+        self.chemin = ""
 
         self.device = None
         self.model, self.preprocess = None, None
@@ -39,7 +40,10 @@ class Ligmage(QObject):
         self.model, _, self.preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k', device=self.device)
         self.tokenizer = open_clip.get_tokenizer('ViT-B-32')
 
-    def ligmage(self, chemin, input):
+    def set_chemin(self, chemin):
+        self.chemin = chemin
+
+    def ligmage(self, recherche):
         logging.info("Thread ligmage: starting.")
 
         if self.model is None:
@@ -47,16 +51,16 @@ class Ligmage(QObject):
             self.load_model()
             logging.info("Thread ligmage: model loaded.")
 
-        mots = input.split()
+        mots = recherche.split()
         start_time = time.time()
 
         print(mots)
-        print(chemin)
+        print(self.chemin)
 
         images = []
         hash_table = {}
 
-        dossier = pathlib.Path(chemin)
+        dossier = pathlib.Path(self.chemin)
         for fichier in dossier.iterdir():
             if fichier.is_file() and filetype.is_image(fichier):
                 images.append(fichier)

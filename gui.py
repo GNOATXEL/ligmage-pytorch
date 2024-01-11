@@ -3,8 +3,8 @@ import sys
 import threading
 from pathlib import Path
 
-from PySide6 import QtGui
-from PySide6.QtCore import QObject, Signal, QUrl, Property, Slot, QDir, QtMsgType, qInstallMessageHandler
+from PySide6.QtCore import QObject, Signal, QUrl, Property, Slot, QtMsgType, qInstallMessageHandler
+from PySide6.QtGui import QImage, QClipboard
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtWidgets import QApplication
 
@@ -25,13 +25,22 @@ class Backend(QObject):
         self.ligmage = Ligmage()
         self._file_url = QUrl()
         self.thread = None
+        self.chemin = ""
 
         logging.basicConfig(level=logging.CRITICAL)
 
     @Slot(str)
-    def run_ligmage(self, input):
-        self.thread = threading.Thread(target=self.ligmage.ligmage, args=(self._file_url.toLocalFile(), input))
+    def run_ligmage(self, recherche):
+        self.chemin = self._file_url.toLocalFile()
+        self.ligmage.set_chemin(self.chemin)
+        self.thread = threading.Thread(target=self.ligmage.ligmage, args=(recherche,))
         self.thread.start()
+
+    @Slot(str)
+    def copy_image(self, image_path):
+        image = QImage(image_path)
+        clipboard = QApplication.clipboard()
+        clipboard.setImage(image, QClipboard.Clipboard)
 
     def get_file_url(self):
         return self._file_url
