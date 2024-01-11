@@ -3,7 +3,8 @@ import sys
 import threading
 from pathlib import Path
 
-from PySide6.QtCore import QObject, Signal, QUrl, Property, Slot
+from PySide6 import QtGui
+from PySide6.QtCore import QObject, Signal, QUrl, Property, Slot, QDir, QtMsgType, qInstallMessageHandler
 from PySide6.QtQml import QQmlApplicationEngine
 from PySide6.QtWidgets import QApplication
 
@@ -27,9 +28,9 @@ class Backend(QObject):
 
         logging.basicConfig(level=logging.CRITICAL)
 
-    @Slot()
-    def run_ligmage(self):
-        self.thread = threading.Thread(target=self.ligmage.ligmage, args=(self._file_url.toLocalFile(),))
+    @Slot(str)
+    def run_ligmage(self, input):
+        self.thread = threading.Thread(target=self.ligmage.ligmage, args=(self._file_url.toLocalFile(), input))
         self.thread.start()
 
     def get_file_url(self):
@@ -47,11 +48,30 @@ class Backend(QObject):
 def on_file_url_changed(file_url):
     print(file_url.toLocalFile())
 
+# Custom message handler to redirect QML console.log messages to Python print
+def qmlMessageHandler(msg_type, context, msg):
+    if msg_type == QtMsgType.QtDebugMsg:
+        prefix = "Debug"
+    elif msg_type == QtMsgType.QtInfoMsg:
+        prefix = "Info"
+    elif msg_type == QtMsgType.QtWarningMsg:
+        prefix = "Warning"
+    elif msg_type == QtMsgType.QtCriticalMsg:
+        prefix = "Critical"
+    elif msg_type == QtMsgType.QtFatalMsg:
+        prefix = "Fatal"
+    else:
+        prefix = "Unknown"
+
+    print(f"{prefix}: {msg}")
+
 
 if __name__ == "__main__":
     # logging.getLogger("PIL.TiffImagePlugin").setLevel(logging.CRITICAL)
 
     app = QApplication(sys.argv)
+    # Install the custom message handler
+    qInstallMessageHandler(qmlMessageHandler)
     engine = QQmlApplicationEngine()
 
     qml_file = Path(__file__).parent / 'view.qml'

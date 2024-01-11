@@ -1,3 +1,4 @@
+import QtCore
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -16,6 +17,7 @@ Window {
         id: folderDialog
 //        selectFolder: true
         title: qsTr("Dossier d'images")
+        currentFolder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
         onAccepted: {
             pathText.text = "Dossier choisi : " + folder
             backend.file_url = folder
@@ -43,36 +45,35 @@ Window {
                 }
 
                 Text {
-                    id: pathText
+                    id: pathText/*
                     width: parent.width
                     wrapMode: Text.Wrap
-                    elide: Text.ElideRight
+                    elide: Text.ElideRight*/
                     text: "Dossier"
                 }
 
             }
-
             // --
-
-            Item {}
-            Item {}
-            Item {}
-
-            // --
-
             RowLayout {
+                TextInput {
+                    id: searchInput
+                    text: "cat"
+                }
+
                 Button {
                     id: ligmageButton
                     objectName: "ligmageButton"
-                    text: qsTr("Lancer le traitement")
-                    onClicked: backend.run_ligmage()
+                    text: qsTr("Chercher")
+                    onClicked: backend.run_ligmage(searchInput.text)
                 }
+
             }
+
+            // --
 
             Text {
                 id: progressText
                 text: "Statut : 0/0"
-                font.family: "Helvetica"
                 font.pointSize: 12
                 color: "green"
                 
@@ -82,6 +83,57 @@ Window {
 
                 function updateProgressText() {
                     progressText.text = "Statut : " + ligmage.progress.join("/")
+                }
+            }
+
+            // --
+
+            Text {
+                id: matchingImagesText
+                text: "les 3 images correspondant le plus sont : "
+                font.pointSize: 12
+                color: "red"
+
+                Component.onCompleted: {
+                    ligmage.images_changed.connect(updateProgressText)
+                }
+
+                function updateProgressText() {
+                    matchingImagesText.text = "les 3 images correspondant le plus sont : " + ligmage.images.join("\n")
+                    img1.source = folderDialog.folder + "/" + ligmage.images[0];
+                    img2.source = folderDialog.folder + "/" + ligmage.images[1];
+                    img3.source = folderDialog.folder + "/" + ligmage.images[2];
+                }
+            }
+
+            Row {
+                spacing: 10
+
+                Image {
+                    id: img1
+                    width: 200
+                    height: 200
+                    sourceSize.width: parent.width // Maintain aspect ratio
+                    anchors.verticalCenter: parent.verticalCenter
+                    asynchronous: true
+                }
+
+                Image {
+                    id: img2
+                    width: 200
+                    height: 200
+                    sourceSize.width: parent.width // Maintain aspect ratio
+                    anchors.verticalCenter: parent.verticalCenter
+                    asynchronous: true
+                }
+
+                Image {
+                    id: img3
+                    width: 200
+                    height: 200
+                    sourceSize.width: parent.width // Maintain aspect ratio
+                    anchors.verticalCenter: parent.verticalCenter
+                    asynchronous: true
                 }
             }
             
