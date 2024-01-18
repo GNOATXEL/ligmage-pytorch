@@ -20,6 +20,7 @@ class Ligmage(QObject):
         self._progress = [0, 0]
         self._images = ["", "", ""]
         self.chemin = ""
+        self.recursive = True
 
         self.device = None
         self.model, self.preprocess = None, None
@@ -40,8 +41,9 @@ class Ligmage(QObject):
         self.model, _, self.preprocess = open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k', device=self.device)
         self.tokenizer = open_clip.get_tokenizer('ViT-B-32')
 
-    def set_chemin(self, chemin):
+    def set_chemin(self, chemin, recursive):
         self.chemin = chemin
+        self.recursive = recursive
 
     def ligmage(self, recherche):
         logging.info("Thread ligmage: starting.")
@@ -61,9 +63,14 @@ class Ligmage(QObject):
         hash_table = {}
 
         dossier = pathlib.Path(self.chemin)
-        for fichier in dossier.iterdir():
-            if fichier.is_file() and filetype.is_image(fichier):
-                images.append(fichier)
+        if self.recursive:
+            for fichier in dossier.rglob("*"):
+                if fichier.is_file() and filetype.is_image(fichier):
+                    images.append(fichier)
+        else:
+            for fichier in dossier.iterdir():
+                if fichier.is_file() and filetype.is_image(fichier):
+                    images.append(fichier)
 
         self._progress = [0, len(images)]
         self.progress_changed.emit(f"{0}/{len(images)}")
@@ -80,7 +87,7 @@ class Ligmage(QObject):
                 cos = torch.nn.CosineSimilarity(dim=1, eps=1e-6)
                 probs = cos(image_features, text_features)
 
-                nom_fichier = image.name  # Fonction à définir pour obtenir le nom du fichier
+                nom_fichier = image.as_uri()  # Fonction à définir pour obtenir le nom du fichier
 
                 hash_table[nom_fichier] = probs[0].item()
 
@@ -97,7 +104,7 @@ class Ligmage(QObject):
                 if probs[0].item() > 0.10:
                     self.files[nom_fichier] = probs[0].item()
                     self.files = dict(sorted(self.files.items(), key=lambda item: item[1], reverse=True))
-                    print(self.files.keys())
+                    # print(self.files.keys())
 
         hash_table = dict(sorted(hash_table.items(), key=lambda item: item[1], reverse=True))
 

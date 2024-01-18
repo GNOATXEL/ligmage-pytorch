@@ -4,12 +4,15 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import Qt.labs.platform
+// import QtQuick.Controls.Material 2.12
 
 Window {
     width: 720
     height: 480
     visible: true
     title: "Ligmage"
+
+    property bool imagesVisible: false
 
     FolderDialog {
         id: folderDialog
@@ -28,6 +31,24 @@ Window {
 
             backend.copy_image(image.source.toString());
         }
+    }
+
+    Component.onCompleted: {
+        ligmage.images_changed.connect(updateProgress)
+    }
+
+    function updateProgress() {
+        // matchingImagesText.text = "les 3 images correspondant le plus sont : " + ligmage.images.join("\n")
+
+        img1.source = ligmage.images[0];
+        img2.source = ligmage.images[1];
+        img3.source = ligmage.images[2];
+
+        img1Text.text = ligmage.images[0];
+        img2Text.text = ligmage.images[1];
+        img3Text.text = ligmage.images[2];
+
+        imagesVisible = true;
     }
 
     RowLayout {
@@ -55,10 +76,17 @@ Window {
                     elide: Text.ElideRight*/
                     text: "Dossier"
                 }
+
+                CheckBox {
+                    id: recursiveCheckbox
+                    checked: true
+                    text: qsTr("Sous-dossiers ?")
+                    onClicked: backend.recursive = checkState
+                }
             }
 
             RowLayout {
-                TextInput {
+                TextField {
                     id: searchInput
                     text: "cat"
                 }
@@ -73,8 +101,8 @@ Window {
 
             Text {
                 id: progressText
+                visible: imagesVisible
                 text: "Statut : 0/0"
-                font.pointSize: 12
                 color: "green"
 
                 Component.onCompleted: {
@@ -83,28 +111,6 @@ Window {
 
                 function updateProgressText() {
                     progressText.text = "Statut : " + ligmage.progress.join("/")
-                }
-            }
-
-            Text {
-                id: matchingImagesText
-                text: "les 3 images correspondant le plus sont : "
-                font.pointSize: 12
-                color: "red"
-
-                Component.onCompleted: {
-                    ligmage.images_changed.connect(updateProgressText)
-                }
-
-                function updateProgressText() {
-                    matchingImagesText.text = "les 3 images correspondant le plus sont : " + ligmage.images.join("\n")
-                    img1.source = folderDialog.folder + "/" + ligmage.images[0];
-                    img2.source = folderDialog.folder + "/" + ligmage.images[1];
-                    img3.source = folderDialog.folder + "/" + ligmage.images[2];
-
-                    img1Text.text = ligmage.images[0];
-                    img2Text.text = ligmage.images[1];
-                    img3Text.text = ligmage.images[2];
                 }
             }
 
@@ -129,6 +135,7 @@ Window {
                         }
 
                         Button {
+                            visible: imagesVisible
                             text: "Copier"
                             onClicked: copyImageToClipboard(img1)
 
@@ -158,6 +165,7 @@ Window {
                         }
 
                         Button {
+                            visible: imagesVisible
                             text: "Copier"
                             onClicked: copyImageToClipboard(img2)
 
@@ -187,6 +195,7 @@ Window {
                         }
 
                         Button {
+                            visible: imagesVisible
                             text: "Copier"
                             onClicked: copyImageToClipboard(img3)
 
