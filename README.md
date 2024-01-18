@@ -1,5 +1,7 @@
 # LigmageX
 
+## Contexte
+
 ## Installation
 
 1. Installer python (ex [miniconda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html))
@@ -24,14 +26,7 @@ Il est possible que la version de Pillow installée automatiquement pose des pro
 pip install pillow==<version>
 ```
 
-## Fonctionnement
-
-1. Ouvrir le projet
-2. Run gui.py (le projet télécharge des données du modèle pour une première utilisation)
-3. Choisissez un répertoire d'image et un mot-clé pour la recherche
-4. Cliquez sur "Chercher"
-
-L'application vous renverra les 3 images du répertoire correspondant le plus au mot-clé choisi. Vous pouvez cliquer sous un bouton sous chaque image pour la copier.
+Pour savoir comment fonctionne l'application, cliquez [ici](lien)
 
 ## Contributeurs
 Axel MARTIN
