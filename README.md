@@ -26,7 +26,7 @@ pip install filetype
 3. Choisissez un répertoire d'image et un mot-clé pour la recherche
 4. Cliquez sur "Chercher"
 
-L'application vous renverra les 3 images du répertoire correspondant le plus au mot-clé choisi.
+L'application vous renverra les 3 images du répertoire correspondant le plus au mot-clé choisi. Vous pouvez cliquer sous un bouton sous chaque image pour la copier.
 
 ## Contributeurs
 Axel MARTIN
