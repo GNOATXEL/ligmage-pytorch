@@ -19,6 +19,11 @@ pip install PySide6
 pip install filetype
 ```
 
+Il est possible que la version de Pillow installée automatiquement pose des problèmes d'incompatibilité, pour pallier ce problème vous pouvez modifier sa version par la commande suivante :
+```
+pip install pillow==<version>
+```
+
 ## Fonctionnement
 
 1. Ouvrir le projet
@@ -30,5 +35,7 @@ L'application vous renverra les 3 images du répertoire correspondant le plus au
 
 ## Contributeurs
 Axel MARTIN
+
 Alexandre LECOMTE
+
 Ivann VYSLANKO
