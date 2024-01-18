@@ -26,7 +26,7 @@ Il est possible que la version de Pillow installée automatiquement pose des pro
 pip install pillow==<version>
 ```
 
-Pour savoir comment fonctionne l'application, cliquez [ici](lien)
+Pour savoir comment fonctionne l'application, cliquez [ici](https://gitlab.istic.univ-rennes1.fr/meminov/ligmagex/-/blob/main/USERMANUAL.md?ref_type=heads&plain=0)
 
 ## Contributeurs
 Axel MARTIN
