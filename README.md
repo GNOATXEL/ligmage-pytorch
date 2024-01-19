@@ -2,7 +2,7 @@
 
 ## Contexte
 
-France, 2020 plus 2, un groupe d'étudiants assoiffés d'innovation se réunit autour d'une table. Un point les rassemble ; ils ont tous, sur leur ordinateur ou bien leur GSM entre autres, une panoplie bien garnie d'images, et plus particulièrement ce qu'on appelle des mèmes ou "memes" comme écrivent les djeunz, comme l'image ci-dessous.
+France, 2020 plus 2, un groupe d'étudiants assoiffés d'innovation se réunit autour d'une table. Un point les rassemble ; ils ont tous, sur leur ordinateur ou bien leur GSM entre autres, une panoplie bien garnie d'images, et plus particulièrement ce qu'on appelle des [mèmes](https://fr.wikipedia.org/wiki/M%C3%A8me_Internet) ou "memes" comme écrivent les djeunz, comme l'image ci-dessous.
 
 <img src="https://cdn.discordapp.com/attachments/462263112926494740/1197894097311117383/aaaaaaaaaa.jpg?ex=65bcecd0&is=65aa77d0&hm=b83a4a8a53a7646407ff5f7e8d71dcc4e01fe45c11581725dd86d74905f49901&" alt="image" width="300" height="auto">
 
