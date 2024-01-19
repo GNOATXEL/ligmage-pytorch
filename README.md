@@ -14,7 +14,7 @@ C'est là qu'un problème survient : comment promptement retrouver le mème que 
 
 Ligmage, nom issu de la contraction entre "Ligma" (un mème populaire sur la toile) et "Image", serait une application capable de retrouver des mèmes à partir de leur contenu.
 
-Prenons l'exemple du mème envoyé plus haut. Le fichier s'appelle actuellement "aaaaaaaaaa.jpg", impossible donc de le retrouver avec une simple recherche. Pas de panique, Ligmage va nous permettre de le retrouver grâce au contenu du mème, en cherchant "marteau" ou "orange man".
+Prenons l'exemple du mème envoyé plus haut. Le fichier s'appelle présentement "aaaaaaaaaa.jpg", impossible donc de le retrouver avec une simple recherche. Pas de panique, Ligmage va nous permettre de le retrouver grâce au contenu du mème, en cherchant "marteau" ou "orange man".
 
 Mais quel sortilège peut bien permettre une telle prouesse ? Eh bien en fait c'est très simple, Ligmage utilise le réseau de neurones CLIP (d'OpenAI), qui reconnait objets et texte sur des images, et renvoie pour un mot donné un coefficient. Plus ce coefficient est haut, plus le mot correspond à l'image. Lorsque l'on rentre un mot dans Ligmage, l'application renvoie les images pour lesquelles le coefficient est le plus haut, et c'est ainsi qu'on retrouve des mèmes facilement malgré un nommage plus que douteux.
 
