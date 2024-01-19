@@ -6,3 +6,18 @@
 4. Cliquez sur "Chercher"
 
 L'application vous renverra les 3 images du répertoire correspondant le plus au mot-clé choisi. Vous pouvez cliquer sous un bouton sous chaque image pour la copier.
+
+## En images
+
+### Accueil
+
+![Home page](img/home.png)
+
+### Choix du dossier d'images, de la recherche récursive et des termes de recherche
+
+![Input typed](img/input.png)
+
+### Affichage des résultats durant la recherche
+
+![Searching and displaying the results](img/search.png)
+
